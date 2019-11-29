@@ -7,6 +7,7 @@ public class Department implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private String name;
+	
 	public Department() {
 	}
 
@@ -47,7 +48,6 @@ public class Department implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-
 		Department other = (Department) obj;
 		if (id == null) {
 			if (other.id != null)
@@ -61,4 +61,5 @@ public class Department implements Serializable {
 	public String toString() {
 		return "Department [id=" + id + ", name=" + name + "]";
 	}
+	
 }
