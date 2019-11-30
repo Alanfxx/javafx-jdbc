@@ -165,7 +165,9 @@ public class DepartmentListController implements Initializable, DataChangeListen
 				service.remove(obj);
 				updateTableView();
 			}catch(DbIntegrityException e) {
-				Alerts.showAlert("Error removing object", null, e.getMessage(), AlertType.ERROR);
+				Alerts.showAlert("Error removing object", null, 
+						"Não foi possivel remover. O departamento tem vendedores alocados.", 
+						AlertType.ERROR);
 			}
 		}
 	}
