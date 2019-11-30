@@ -2,6 +2,7 @@ package gui;
 
 import java.net.URL;
 import java.sql.Date;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -138,14 +139,18 @@ public class SellerFormController implements Initializable {
 
 		if (dpBirthDate.getValue() == null) {// provavelmente ta errado
 			exception.addError("birthDate", "Field can't be empty");
+		}else {
+			Instant instant = Instant.from(dpBirthDate.getValue().atStartOfDay(ZoneId.systemDefault()));
+			obj.setBirthDate(Date.from(instant));
 		}
-		obj.setBirthDate(Date.valueOf(dpBirthDate.getValue()));
 
-		if (txtBaseSalary.getText() == null || txtBaseSalary.getText().trim().equals("")) {// ????????????
+		if (txtBaseSalary.getText() == null || txtBaseSalary.getText().trim().equals("")) {
 			exception.addError("baseSalary", "Field can't be empty");
 		}
-		obj.setBaseSalary(Double.parseDouble(txtBaseSalary.getText()));
+		obj.setBaseSalary(Utils.tryParseToDouble(txtBaseSalary.getText()));
 
+		obj.setDepartment(comboBoxDepartment.getValue());
+		
 		if (exception.getErrors().size() > 0) {
 			throw exception;
 		}
@@ -202,18 +207,11 @@ public class SellerFormController implements Initializable {
 
 	private void setErrorMessages(Map<String, String> errors) {
 		Set<String> fields = errors.keySet();
-		if (fields.contains("name")) {
-			labelErrorName.setText(errors.get("name"));
-		}
-		if (fields.contains("email")) {
-			labelErrorEmail.setText(errors.get("email"));
-		}
-		if (fields.contains("birthDate")) {
-			labelErrorBirthDate.setText(errors.get("birthDate"));
-		}
-		if (fields.contains("baseSalary")) {
-			labelErrorBaseSalary.setText(errors.get("baseSalary"));
-		}
+		
+		labelErrorName.setText(fields.contains("name") ? errors.get("name") : "");
+		labelErrorEmail.setText(fields.contains("email") ? errors.get("email") : "");
+		labelErrorBirthDate.setText(fields.contains("birthDate") ? errors.get("birthDate") : "");
+		labelErrorBaseSalary.setText(fields.contains("baseSalary") ? errors.get("baseSalary") : "");
 	}
 
 	private void initializeComboBoxDepartment() {
